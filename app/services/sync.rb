@@ -34,7 +34,7 @@ class Sync
     exchanges_data = coins_data.get_coin_exchanges(coin.symbol)
 
     if exchanges_data.nil?
-      Rails.logger.debug "No exchanges found for #{coin.symbol}"
+      Rails.logger.info "No exchanges found for #{coin.symbol}"
       return
     end
 

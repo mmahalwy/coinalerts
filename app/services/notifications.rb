@@ -4,7 +4,7 @@ class Notifications
   end
 
   def send_twilio_notification(body)
-    return Rails.logger.debug "Sent: #{body}" if !@send_notifications
+    return Rails.logger.info "Sent: #{body}" if !@send_notifications
 
     TwilioClient.api.account.messages.create(
       from: TWILIO_FROM_PHONE_NUMBER,
