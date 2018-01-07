@@ -15,27 +15,6 @@ ActiveRecord::Schema.define(version: 20180106232902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "Coins", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "symbol", limit: 255
-    t.datetime "createdAt", null: false
-    t.datetime "updatedAt", null: false
-    t.index ["symbol"], name: "coins_symbol"
-  end
-
-  create_table "Exchanges", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.datetime "createdAt", null: false
-    t.datetime "updatedAt", null: false
-  end
-
-  create_table "Prices", id: :serial, force: :cascade do |t|
-    t.float "value"
-    t.datetime "createdAt", null: false
-    t.datetime "updatedAt", null: false
-    t.index ["value"], name: "prices_value"
-  end
-
   create_table "coin_prices", force: :cascade do |t|
     t.float "price"
     t.bigint "coin_id"
@@ -49,10 +28,16 @@ ActiveRecord::Schema.define(version: 20180106232902) do
 
   create_table "coins", force: :cascade do |t|
     t.string "symbol"
+    t.string "asset_symbol"
+    t.string "asset_name"
+    t.string "quote_asset_symbol"
+    t.string "quote_asset_name"
     t.bigint "exchange_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["asset_symbol"], name: "index_coins_on_asset_symbol"
     t.index ["exchange_id"], name: "index_coins_on_exchange_id"
+    t.index ["quote_asset_symbol"], name: "index_coins_on_quote_asset_symbol"
     t.index ["symbol"], name: "index_coins_on_symbol"
   end
 
