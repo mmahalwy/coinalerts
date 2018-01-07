@@ -6,5 +6,8 @@ class CreateExchanges < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    add_index :exchanges, :name
+    add_index :exchanges, :preferred
   end
 end

@@ -8,6 +8,11 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_exchanges_on_name       (name)
+#  index_exchanges_on_preferred  (preferred)
+#
 
 require 'test_helper'
 

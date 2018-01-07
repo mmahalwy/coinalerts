@@ -13,5 +13,12 @@ class CreateCoins < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    add_index :coins, :symbol
+    add_index :coins, :rank
+    add_index :coins, :name
+    add_index :coins, :preferred
+    add_index :coins, :price_usd
+    add_index :coins, :market_cap_usd
   end
 end

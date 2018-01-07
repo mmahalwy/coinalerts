@@ -44,6 +44,8 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (8.0.0)
+    audited (4.5.0)
+      activerecord (>= 4.0, < 5.2)
     awesome_print (1.7.0)
     binance (0.3.1)
       faraday (~> 0.12.2)
@@ -167,6 +169,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   annotate
+  audited (~> 4.5)
   awesome_print
   binance
   byebug

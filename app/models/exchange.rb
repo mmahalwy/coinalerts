@@ -8,7 +8,13 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_exchanges_on_name       (name)
+#  index_exchanges_on_preferred  (preferred)
+#
 
 class Exchange < ApplicationRecord
-  has_many :coins
+  has_many :exchange_coins
+  has_many :coins, through: :exchange_coins
 end

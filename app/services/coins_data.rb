@@ -13,7 +13,15 @@ class CoinsData
   end
 
   def get_cryptocompare_coins_map
-    Cryptocompare::CoinList.all['Data']
+    Cryptocompare::CoinList.all.try(:[], 'Data')
+  end
+
+  def get_coin_info(symbol, base = 'BTC')
+    Cryptocompare::CoinSnapshot.find(symbol, base).try(:[], 'Data')
+  end
+
+  def get_coin_exchanges(symbol, base = 'BTC')
+    get_coin_info(symbol).try(:[], 'Exchanges')
   end
 
   def coin_market_cap_coins_symbol_map
