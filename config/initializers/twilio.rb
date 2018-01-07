@@ -1,3 +1,3 @@
-TwilioClient = Twilio::REST::Client.new ENV.fetch('TWILIO_ACCOUNT_SID'), ENV.fetch('TWILIO_AUTH_TOKEN')
+TwilioClient = Twilio::REST::Client.new ENV.fetch('TWILIO_ACCOUNT_SID', nil), ENV.fetch('TWILIO_AUTH_TOKEN', nil)
 TWILIO_FROM_PHONE_NUMBER = '+14159938419'
 TWILIO_TO_PHONE_NUMBER = '+14157696068'
