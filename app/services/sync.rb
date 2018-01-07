@@ -8,6 +8,34 @@ class Sync
     sync_coins
   end
 
+  def sync_binance
+    client = Binance::Client::REST.new
+    products = client.products['data']
+
+    products.each do |product|
+      # begin
+        coin_market_cap_coin = CoinsData.coin_market_data(product['baseAssetName'].gsub(/ /, "-"))
+
+        Coin.where(symbol: product['baseAsset']).first_or_initialize.tap do |coin|
+          coin.name = product.try(:[], 'baseAssetName')
+          coin.price_usd = coin_market_cap_coin.try(:[], 'price_usd')
+          coin.rank = coin_market_cap_coin.try(:[], 'rank')
+          coin.market_cap_usd = coin_market_cap_coin.try(:[], 'market_cap_usd')
+          coin.percent_change_1h = coin_market_cap_coin.try(:[], 'percent_change_1h')
+          coin.percent_change_24h = coin_market_cap_coin.try(:[], 'percent_change_24h')
+          coin.percent_change_7d = coin_market_cap_coin.try(:[], 'percent_change_7d')
+          coin.preferred = true
+          coin.save!
+
+          create_coin_history(coin)
+          check_exchanges(coin)
+        end
+      # rescue
+        # Rails.logger.info "Error for #{product['baseAssetName']}"
+      # end
+    end
+  end
+
   def sync_coins
     coins_data = CoinsData.new
 
@@ -25,13 +53,13 @@ class Sync
         coin.save!
 
         create_coin_history(coin)
-        check_exchanges(coins_data, coin)
+        check_exchanges(coin)
       end
     end
   end
 
-  def check_exchanges(coins_data, coin)
-    exchanges_data = coins_data.get_coin_exchanges(coin.symbol)
+  def check_exchanges(coin)
+    exchanges_data = CoinsData.coin_exchanges(coin.symbol)
 
     if exchanges_data.nil?
       Rails.logger.info "No exchanges found for #{coin.symbol}"
