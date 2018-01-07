@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107075931) do
+ActiveRecord::Schema.define(version: 20180107225454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20180107075931) do
     t.float "percent_change_7d"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "coinmarketcap_id"
     t.index ["market_cap_usd"], name: "index_coins_on_market_cap_usd"
     t.index ["name"], name: "index_coins_on_name"
     t.index ["preferred"], name: "index_coins_on_preferred"

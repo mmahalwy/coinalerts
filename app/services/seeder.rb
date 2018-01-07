@@ -84,11 +84,11 @@ module Seeder
 
     coins_data = CoinsData.new
 
-    coin_market_cap_coins_symbol_map = coins_data.coin_market_cap_coins_symbol_map
+    get_coinmarketcap_coins_symbol_map = coins_data.get_coinmarketcap_coins_symbol_map
     cryptocompare_coins_symbol_map = coins_data.cryptocompare_coins_symbol_map
 
     coins_to_create = cryptocompare_coins_symbol_map.map do |symbol, coin|
-      coin_market_cap_coin = coin_market_cap_coins_symbol_map[symbol]
+      coin_market_cap_coin = get_coinmarketcap_coins_symbol_map[symbol]
 
       {
         name: coin['Name'],

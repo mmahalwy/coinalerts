@@ -4,11 +4,11 @@ class CoinsData
   COINMARKETCAP_LIMIT = 400
 
   def initialize
-    @coin_market_cap_coins = get_coin_market_cap_coins
+    @coin_market_cap_coins = get_coinmarketcap_coins
     @cryptocompare_coins_symbol_map = get_cryptocompare_coins_map
   end
 
-  def get_coin_market_cap_coins
+  def get_coinmarketcap_coins
     JSON.parse(Coinmarketcap.coins(COINMARKETCAP_LIMIT).body)
   end
 
@@ -16,7 +16,7 @@ class CoinsData
     Cryptocompare::CoinList.all.try(:[], 'Data')
   end
 
-  def coin_market_cap_coins_symbol_map
+  def get_coinmarketcap_coins_symbol_map
     symbol_map = {}
 
     @coin_market_cap_coins.each do |coin|
@@ -34,7 +34,7 @@ class CoinsData
     coin_info(symbol).try(:[], 'Exchanges')
   end
 
-  def self.coin_market_data(symbol)
+  def self.coinmarketcap_data(symbol)
     JSON.parse(Coinmarketcap.coin(symbol).body)[0]
   end
 end

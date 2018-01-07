@@ -14,16 +14,16 @@ class Sync
 
     products.each do |product|
       # begin
-        coin_market_cap_coin = CoinsData.coin_market_data(product['baseAssetName'].gsub(/ /, "-"))
+        data = CoinsData.coinmarketcap_data(product['baseAssetName'].gsub(/ /, "-"))
 
         Coin.where(symbol: product['baseAsset']).first_or_initialize.tap do |coin|
           coin.name = product.try(:[], 'baseAssetName')
-          coin.price_usd = coin_market_cap_coin.try(:[], 'price_usd')
-          coin.rank = coin_market_cap_coin.try(:[], 'rank')
-          coin.market_cap_usd = coin_market_cap_coin.try(:[], 'market_cap_usd')
-          coin.percent_change_1h = coin_market_cap_coin.try(:[], 'percent_change_1h')
-          coin.percent_change_24h = coin_market_cap_coin.try(:[], 'percent_change_24h')
-          coin.percent_change_7d = coin_market_cap_coin.try(:[], 'percent_change_7d')
+          coin.price_usd = data.try(:[], 'price_usd')
+          coin.rank = data.try(:[], 'rank')
+          coin.market_cap_usd = data.try(:[], 'market_cap_usd')
+          coin.percent_change_1h = data.try(:[], 'percent_change_1h')
+          coin.percent_change_24h = data.try(:[], 'percent_change_24h')
+          coin.percent_change_7d = data.try(:[], 'percent_change_7d')
           coin.preferred = true
           coin.save!
 
@@ -39,23 +39,31 @@ class Sync
   def sync_coins
     coins_data = CoinsData.new
 
-    coin_market_cap_coins_symbol_map = coins_data.coin_market_cap_coins_symbol_map
+    get_coinmarketcap_coins_symbol_map = coins_data.get_coinmarketcap_coins_symbol_map
 
-    coin_market_cap_coins_symbol_map.each do |symbol, data|
-      Coin.where(symbol: symbol).first_or_initialize.tap do |coin|
-        coin.name = data.try(:[], 'name')
-        coin.price_usd = data.try(:[], 'price_usd')
-        coin.rank = data.try(:[], 'rank')
-        coin.market_cap_usd = data.try(:[], 'market_cap_usd')
-        coin.percent_change_1h = data.try(:[], 'percent_change_1h')
-        coin.percent_change_24h = data.try(:[], 'percent_change_24h')
-        coin.percent_change_7d = data.try(:[], 'percent_change_7d')
-        coin.save!
-
-        create_coin_history(coin)
-        check_exchanges(coin)
-      end
+    Coin.preferred.each do |coin|
+      sync_coin(coin, get_coinmarketcap_coins_symbol_map)
     end
+  end
+
+  def sync_coin(coin, get_coinmarketcap_coins_symbol_map)
+    coinmarketcap_id = coin.coinmarketcap_id || coin.name.gsub(/ /, "-")
+    data = get_coinmarketcap_coins_symbol_map[coin.symbol] || CoinsData.coinmarketcap_data(coinmarketcap_id)
+  rescue
+      Rails.logger.info "Rescued an error with fetching data for #{coin.symbol}"
+  ensure
+      coin.name = data.try(:[], 'name') || 'N/A'
+      coin.coinmarketcap_id = data.try(:[], 'id')
+      coin.price_usd = data.try(:[], 'price_usd')
+      coin.rank = data.try(:[], 'rank')
+      coin.market_cap_usd = data.try(:[], 'market_cap_usd')
+      coin.percent_change_1h = data.try(:[], 'percent_change_1h')
+      coin.percent_change_24h = data.try(:[], 'percent_change_24h')
+      coin.percent_change_7d = data.try(:[], 'percent_change_7d')
+      coin.save!
+
+      create_coin_history(coin)
+      check_exchanges(coin)
   end
 
   def check_exchanges(coin)

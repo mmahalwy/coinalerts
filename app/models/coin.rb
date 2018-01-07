@@ -14,6 +14,7 @@
 #  percent_change_7d  :float
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  coinmarketcap_id   :string
 #
 # Indexes
 #
