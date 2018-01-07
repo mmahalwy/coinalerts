@@ -17,4 +17,6 @@
 class Exchange < ApplicationRecord
   has_many :exchange_coins
   has_many :coins, through: :exchange_coins
+
+  scope :preferred, -> { where(preferred: true) }
 end
