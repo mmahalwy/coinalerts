@@ -1,0 +1,43 @@
+# == Schema Information
+#
+# Table name: exchange_coins
+#
+#  id                 :integer          not null, primary key
+#  exchange_id        :integer
+#  coin_id            :integer
+#  symbol             :string           not null
+#  asset_symbol       :string           not null
+#  asset_name         :string           not null
+#  quote_asset_symbol :string           not null
+#  quote_asset_name   :string           not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+# Indexes
+#
+#  index_exchange_coins_on_asset_symbol        (asset_symbol)
+#  index_exchange_coins_on_coin_id             (coin_id)
+#  index_exchange_coins_on_exchange_id         (exchange_id)
+#  index_exchange_coins_on_quote_asset_symbol  (quote_asset_symbol)
+#  index_exchange_coins_on_symbol              (symbol)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  exchange: one
+  coin: one
+  symbol: MyString
+  asset_symbol: MyString
+  asset_name: MyString
+  quote_asset_symbol: MyString
+  quote_asset_name: MyString
+
+two:
+  exchange: two
+  coin: two
+  symbol: MyString
+  asset_symbol: MyString
+  asset_name: MyString
+  quote_asset_symbol: MyString
+  quote_asset_name: MyString

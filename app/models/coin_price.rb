@@ -3,7 +3,7 @@
 # Table name: coin_prices
 #
 #  id          :integer          not null, primary key
-#  price       :float
+#  price       :float            not null
 #  coin_id     :integer
 #  exchange_id :integer
 #  created_at  :datetime         not null

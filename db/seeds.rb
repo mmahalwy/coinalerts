@@ -1,1 +1,3 @@
-Sync.new.perform
+# Sync.new.perform
+Seeder.seed
+

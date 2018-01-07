@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180106232902) do
+ActiveRecord::Schema.define(version: 20180107052249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "coin_prices", force: :cascade do |t|
-    t.float "price"
+    t.float "price", null: false
     t.bigint "coin_id"
     t.bigint "exchange_id"
     t.datetime "created_at", null: false
@@ -27,27 +27,44 @@ ActiveRecord::Schema.define(version: 20180106232902) do
   end
 
   create_table "coins", force: :cascade do |t|
-    t.string "symbol"
-    t.string "asset_symbol"
-    t.string "asset_name"
-    t.string "quote_asset_symbol"
-    t.string "quote_asset_name"
-    t.bigint "exchange_id"
+    t.string "name", null: false
+    t.string "symbol", null: false
+    t.boolean "preferred", default: false, null: false
+    t.float "price_usd"
+    t.float "market_cap_usd"
+    t.float "percent_change_1h"
+    t.float "percent_change_24h"
+    t.float "percent_change_7d"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["asset_symbol"], name: "index_coins_on_asset_symbol"
-    t.index ["exchange_id"], name: "index_coins_on_exchange_id"
-    t.index ["quote_asset_symbol"], name: "index_coins_on_quote_asset_symbol"
-    t.index ["symbol"], name: "index_coins_on_symbol"
+  end
+
+  create_table "exchange_coins", force: :cascade do |t|
+    t.bigint "exchange_id"
+    t.bigint "coin_id"
+    t.string "symbol", null: false
+    t.string "asset_symbol", null: false
+    t.string "asset_name", null: false
+    t.string "quote_asset_symbol", null: false
+    t.string "quote_asset_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["asset_symbol"], name: "index_exchange_coins_on_asset_symbol"
+    t.index ["coin_id"], name: "index_exchange_coins_on_coin_id"
+    t.index ["exchange_id"], name: "index_exchange_coins_on_exchange_id"
+    t.index ["quote_asset_symbol"], name: "index_exchange_coins_on_quote_asset_symbol"
+    t.index ["symbol"], name: "index_exchange_coins_on_symbol"
   end
 
   create_table "exchanges", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
+    t.boolean "preferred", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_foreign_key "coin_prices", "coins"
   add_foreign_key "coin_prices", "exchanges"
-  add_foreign_key "coins", "exchanges"
+  add_foreign_key "exchange_coins", "coins"
+  add_foreign_key "exchange_coins", "exchanges"
 end

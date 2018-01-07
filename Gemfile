@@ -28,6 +28,8 @@ gem 'puma', '~> 3.7'
 gem 'annotate'
 
 gem 'binance'
+gem 'coinmarketcap'
+gem 'cryptocompare'
 
 gem 'twilio-ruby', '~> 5.6.0'
 
