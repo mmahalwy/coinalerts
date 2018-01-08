@@ -13,7 +13,7 @@ class Sync
     products = client.products['data']
 
     products.each do |product|
-      # begin
+      begin
         data = CoinsData.coinmarketcap_data(product['baseAssetName'].gsub(/ /, "-"))
 
         Coin.where(symbol: product['baseAsset']).first_or_initialize.tap do |coin|
@@ -30,9 +30,31 @@ class Sync
           create_coin_history(coin)
           check_exchanges(coin)
         end
-      # rescue
-        # Rails.logger.info "Error for #{product['baseAssetName']}"
-      # end
+      rescue
+      end
+    end
+  end
+
+  def sync_kucoin
+    products = KucoinRuby::Market.coins['data']
+
+    products.each do |product|
+      data = CoinsData.coinmarketcap_data(product['name'].gsub(/ /, "-"))
+
+      Coin.where(symbol: product['coin']).first_or_initialize.tap do |coin|
+        coin.name = product.try(:[], 'coin')
+        coin.price_usd = data.try(:[], 'price_usd')
+        coin.rank = data.try(:[], 'rank')
+        coin.market_cap_usd = data.try(:[], 'market_cap_usd')
+        coin.percent_change_1h = data.try(:[], 'percent_change_1h')
+        coin.percent_change_24h = data.try(:[], 'percent_change_24h')
+        coin.percent_change_7d = data.try(:[], 'percent_change_7d')
+        coin.preferred = true
+        coin.save!
+
+        create_coin_history(coin)
+        check_exchanges(coin)
+      end
     end
   end
 

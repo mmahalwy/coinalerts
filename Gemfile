@@ -26,7 +26,7 @@ gem 'puma', '~> 3.7'
 # gem 'rack-cors'
 
 gem 'annotate'
-
+gem 'kucoin_ruby'
 gem 'binance'
 gem 'coinmarketcap'
 gem 'cryptocompare'

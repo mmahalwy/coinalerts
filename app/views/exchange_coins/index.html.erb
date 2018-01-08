@@ -1,0 +1,60 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Exchange</th>
+      <th>Coin</th>
+      <th>Created at</th>
+      <th>Change 1h</th>
+      <th>Change 24h</th>
+      <th>Change 7d</th>
+      <th>Cap
+        <250M</th>
+          <th>Cap
+            <100M</th>
+              <th>Cap
+                <50M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exchange_coins.each do |exchange_coin| %>
+      <tr>
+        <td>
+          <%= exchange_coin.exchange.name %>
+        </td>
+        <td>
+          <%= exchange_coin.coin.symbol %>
+        </td>
+        <td>
+          <%= exchange_coin.created_at %>
+        </td>
+        <td class="<%= exchange_coin.coin.percent_change_1h.try(:>, 0) ? 'table-success' : 'table-danger' %>">
+          <%= number_to_percentage(exchange_coin.coin.percent_change_1h) %>
+        </td>
+        <td class="<%= exchange_coin.coin.percent_change_24h.try(:>, 0) ? 'table-success' : 'table-danger' %>">
+          <%= number_to_percentage(exchange_coin.coin.percent_change_24h) %>
+        </td>
+        <td class="<%= exchange_coin.coin.percent_change_7d.try(:>, 0) ? 'table-success' : 'table-danger' %>">
+          <%= number_to_percentage(exchange_coin.coin.percent_change_7d) %>
+        </td>
+        <td class="<%= exchange_coin.coin.market_cap_usd.try(:<, 250_000_000) ? 'table-success' : 'table-danger' %>">
+          <%= exchange_coin.coin.market_cap_usd.try(:<, 250_000_000) ? 'Yes' : 'No' %>
+        </td>
+        <td class="<%= exchange_coin.coin.market_cap_usd.try(:<, 100_000_000) ? 'table-success' : 'table-danger' %>">
+          <%= exchange_coin.coin.market_cap_usd.try(:<, 100_000_000) ? 'Yes' : 'No' %>
+        </td>
+        <td class="<%= exchange_coin.coin.market_cap_usd.try(:<, 50_000_000) ? 'table-success' : 'table-danger' %>">
+          <%= exchange_coin.coin.market_cap_usd.try(:<, 50_000_000) ? 'Yes' : 'No' %>
+        </td>
+      </tr>
+      </tr>
+      <% end %>
+  </tbody>
+</table>
+
+<script>
+  $('.table').DataTable({
+    scrollY: '85vh',
+    scrollCollapse: true,
+    paging: false
+  });
+</script>

@@ -1,0 +1,2 @@
+module ExchangeCoinsHelper
+end
