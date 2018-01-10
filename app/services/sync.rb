@@ -27,7 +27,7 @@ class Sync
           coin.preferred = true
           coin.save!
 
-
+          create_coin_history(coin)
           check_exchanges(coin)
         end
       rescue
@@ -107,7 +107,7 @@ class Sync
     end
   end
 
-  def
+  def create_coin_history(coin)
     coin.coin_histories.create(
       rank: coin.rank,
       price_usd: coin.price_usd,
