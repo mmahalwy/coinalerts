@@ -99,7 +99,8 @@ class Sync
 
       ExchangeCoin.find_or_initialize_by(exchange: exchange, coin: coin) do |exchange_coin|
         if exchange_coin.new_record? && exchange.preferred? && @send_notifications
-          @notifications.send_twilio_notification("Added to #{exchange.name}: #{coin.name}")
+          # TODO: readd this
+          # @notifications.send_twilio_notification("Added to #{exchange.name}: #{coin.name}")
         end
 
         exchange_coin.save!
