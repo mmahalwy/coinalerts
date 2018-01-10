@@ -27,7 +27,7 @@ class Sync
           coin.preferred = true
           coin.save!
 
-          create_coin_history(coin)
+
           check_exchanges(coin)
         end
       rescue
@@ -52,7 +52,6 @@ class Sync
         coin.preferred = true
         coin.save!
 
-        create_coin_history(coin)
         check_exchanges(coin)
       end
     end
@@ -84,7 +83,6 @@ class Sync
       coin.percent_change_7d = data.try(:[], 'percent_change_7d')
       coin.save!
 
-      create_coin_history(coin)
       check_exchanges(coin)
   end
 
@@ -109,7 +107,7 @@ class Sync
     end
   end
 
-  def create_coin_history(coin)
+  def
     coin.coin_histories.create(
       rank: coin.rank,
       price_usd: coin.price_usd,

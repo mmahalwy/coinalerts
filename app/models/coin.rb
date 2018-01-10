@@ -32,6 +32,4 @@ class Coin < ApplicationRecord
   has_many :exchanges, through: :exchange_coins
 
   scope :preferred, -> { where(preferred: true) }
-
-  audited
 end
