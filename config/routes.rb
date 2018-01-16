@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  get 'exchange_coins', to: 'exchange_coins#index'
-
   root to: 'coinmarketcap#index'
+
+  get 'exchange_coins', to: 'exchange_coins#index'
+  get 'exchange_coins/:symbol', to: 'exchange_coins#show'
 
   get 'coinmarketcap/index'
   get 'coinmarketcap/:amount', to: 'coinmarketcap#show'
