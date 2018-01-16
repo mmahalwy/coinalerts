@@ -4,6 +4,7 @@ class ExchangeCoinsController < ApplicationController
   end
 
   def show
-    @exchanges = Coin.find_by_symbol(params[:symbol])
+    @coin = Coin.find_by_symbol(params[:symbol])
+    @exchanges = @coin.exchanges
   end
 end
