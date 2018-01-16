@@ -6,6 +6,8 @@ class Sync
 
   def perform
     sync_coins
+    sync_binance
+    sync_kucoin
   end
 
   def sync_binance
